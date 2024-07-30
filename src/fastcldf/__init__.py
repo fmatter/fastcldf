@@ -97,7 +97,7 @@ def create_cldf(
                     writer.cldf.add_columns(url, coldata)
                     df = df.rename(columns={col: coldata["name"]})
 
-            for rec in df.to_dict("records")[0:1]:
+            for rec in df.to_dict("records"):
                 writer.objects[url].append(rec)
         writer.cldf.write()
         ds = writer.cldf
