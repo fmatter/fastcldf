@@ -2,6 +2,7 @@ from loguru import logger as log
 
 """Console script for fastcldf."""
 import sys
+
 import click
 
 

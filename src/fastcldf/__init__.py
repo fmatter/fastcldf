@@ -1,10 +1,10 @@
-from pycldf.util import pkg_path
-from pycldf.dataset import MD_SUFFIX
+import pandas as pd
 from cldfbench import CLDFSpec
 from cldfbench.cldf import CLDFWriter
-from writio import load, dump
-import pandas as pd
 from loguru import logger as log
+from pycldf.dataset import MD_SUFFIX
+from pycldf.util import pkg_path
+from writio import dump, load
 
 
 def find_column_name(col, target_cols):
