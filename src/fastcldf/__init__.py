@@ -2,7 +2,6 @@ from pycldf.util import pkg_path
 from pycldf.dataset import MD_SUFFIX
 from cldfbench import CLDFSpec
 from cldfbench.cldf import CLDFWriter
-from writio import load, dump
 import pandas as pd
 from loguru import logger as log
 
