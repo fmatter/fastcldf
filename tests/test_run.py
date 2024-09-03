@@ -1,5 +1,6 @@
 from fastcldf import create_cldf
 
+
 def test_create(tmpdir):
     ds = create_cldf(
         tables={
@@ -17,6 +18,7 @@ def test_create(tmpdir):
                 {"id": "wf-1", "form": "yay", "parameter": "tree", "language": "lg-1"}
             ],
         },
+        sources="",
         spec={
             "dir": tmpdir,
             "module": "Generic",
