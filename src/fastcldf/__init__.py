@@ -6,7 +6,7 @@ import pybtex
 from cldfbench import CLDFSpec
 from cldfbench.cldf import CLDFWriter
 from loguru import logger as log
-from pycldf.dataset import MD_SUFFIX
+from pycldf.dataset import MD_SUFFIX, Dataset
 from pycldf.sources import Source
 from pycldf.util import pkg_path
 from writio import load
@@ -190,3 +190,6 @@ def create_cldf(
     #         "Segments": lambda x: splitcol(x, "Segments", sep=" "),
     #         "Alignment": lambda x: splitcol(x, "Alignment", sep=" "),
     #     }
+
+def load_cldf(metadata_file):
+    print("ha", metadata_file)
