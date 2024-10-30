@@ -55,6 +55,8 @@ def process_native_table(
         coldata = find_column_name(col, cldf_col_data[table])
         if not coldata:
             coldata = find_column_name(col, cldf_col_data["general"])
+            if coldata:
+                added_cols[coldata["name"]] = coldata
         if coldata:
             df = df.rename(columns={col: coldata["name"]})
         elif col in user_columns:
@@ -140,7 +142,6 @@ def create_cldf(
     cldf_tables = cldf_tables or []
     with CLDFWriter(CLDFSpec(**spec)) as writer:
         for component in cldf_tables:
-            print(component, "HA")
             writer.cldf.add_component(component)
         component_names, component_data, cldf_col_data = load_cldf_data()
         for table, data in tables.items():
