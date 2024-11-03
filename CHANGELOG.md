@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+* `load_cldf`
+
 ## [0.1.1] - 2024-09-03
 
 ### Added
@@ -16,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 * adding more than just 1 entry
 
-## [0.1.0] - 2023-07-30
+## [0.1.0] - 2024-07-30
 
 Initial release
 
