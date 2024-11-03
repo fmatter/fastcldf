@@ -6,8 +6,8 @@ import pybtex
 from cldfbench import CLDFSpec
 from cldfbench.cldf import CLDFWriter
 from loguru import logger as log
-from pycldf.dataset import MD_SUFFIX
 from pycldf import Dataset
+from pycldf.dataset import MD_SUFFIX
 from pycldf.sources import Source
 from pycldf.util import pkg_path
 from writio import load
@@ -192,21 +192,22 @@ def create_cldf(
     #         "Alignment": lambda x: splitcol(x, "Alignment", sep=" "),
     #     }
 
+
 def load_cldf(metadata_file):
     """Load data from a CLDF dataset
 
-    Parameters
-    -----------
-    metadata_file : str
-        A path to a `.json` metadata file.
-    
-    Returns
-    -------
-    data : dict
-        A dict where
-* e.g. `"examples.csv"` contains the example table records (list)
-* `"metadata"` contains the metadata (dict)
-* `"sources"` contains the bibfile (str)
+        Parameters
+        -----------
+        metadata_file : str
+            A path to a `.json` metadata file.
+
+        Returns
+        -------
+        data : dict
+            A dict where
+    * e.g. `"examples.csv"` contains the example table records (list)
+    * `"metadata"` contains the metadata (dict)
+    * `"sources"` contains the bibfile (str)
     """
     ds = Dataset.from_metadata(metadata_file)
     data = {}
@@ -218,4 +219,3 @@ def load_cldf(metadata_file):
     data["metadata"] = ds.metadata_dict
     data["sources"] = load(ds.bibpath)
     return data
-
