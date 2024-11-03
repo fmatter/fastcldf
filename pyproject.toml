@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fastcldf"
-version = "0.1.2.dev"
+version = "0.1.2"
 license = "Apache-2.0"
 homepage = "https://fl.mt/fastcldf"
 repository = "https://github.com/fmatter/fastcldf"
