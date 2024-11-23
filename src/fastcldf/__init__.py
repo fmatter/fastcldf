@@ -169,13 +169,16 @@ def create_cldf(
             for rec in df.to_dict("records"):
                 writer.objects[url].append(rec)
 
-        source_path = Path(sources)
-        sources = None
-        if source_path.is_file():
-            sources = pybtex.database.parse_file(source_path)
-            writer.cldf.add_sources(
-                *[Source.from_entry(k, e) for k, e in sources.entries.items()]
-            )
+        if sources:
+            source_path = Path(sources)
+            sources = None
+            if source_path.is_file():
+                sources = pybtex.database.parse_file(source_path)
+                writer.cldf.add_sources(
+                    *[Source.from_entry(k, e) for k, e in sources.entries.items()]
+                )
+        else:
+            log.error("No sources file(s) specified.")
         writer.cldf.write()
         ds = writer.cldf
     if validate:
