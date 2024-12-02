@@ -213,6 +213,7 @@ def load_cldf(metadata_file):
     * `"sources"` contains the bibfile (str)
     """
     ds = Dataset.from_metadata(metadata_file)
+    ds.validate()
     data = {}
     for table in ds.tables:
         res = []
