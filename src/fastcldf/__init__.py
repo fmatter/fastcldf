@@ -221,5 +221,6 @@ def load_cldf(metadata_file):
             res.append(rec)
         data[str(table.url)] = res
     data["metadata"] = ds.metadata_dict
-    data["sources"] = load(ds.bibpath)
+    if ds.bibpath.is_file():
+        data["sources"] = load(ds.bibpath)
     return data
