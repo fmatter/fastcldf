@@ -69,6 +69,7 @@ def process_native_table(
             added_cols[col] = {"name": col.capitalize()}
     for existing_table in writer.cldf.tables:
         if existing_table.url.string.startswith(table):
+            log.error(f"Table {table} already exists in CLDF dataset. ")
             break
     else:
         writer.cldf.add_component(component_names[table])
