@@ -73,8 +73,9 @@ def process_native_table(
     else:
         writer.cldf.add_component(component_names[table])
     for col, coldata in added_cols.items():
-        log.info(f"Adding unspecified column: {col}")
-        writer.cldf.add_columns(component_names[table], coldata)
+        log.warning(f"Undefined column {col} in data")
+        # log.info(f"Adding unspecified column: {col}")
+        # writer.cldf.add_columns(component_names[table], coldata)
     for colname, cdata in user_columns.items():
         if colname in cldf_col_data[table]:
             writer.cldf.remove_columns(component_names[table], colname)
