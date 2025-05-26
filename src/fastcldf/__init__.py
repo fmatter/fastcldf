@@ -116,6 +116,7 @@ def create_cldf(
     columns=None,
     foreignkeys=None,
     cldf_tables=None,
+    identifier=None,
     validate=True,
 ):
     """Creates a CLDF dataset.
@@ -193,6 +194,8 @@ def create_cldf(
             log.error("No sources file(s) specified.")
         writer.cldf.write()
         ds = writer.cldf
+        if identifier:
+            ds.properties.setdefault('rdf:ID', identifier)
 
     if validate:
         ds.validate()
