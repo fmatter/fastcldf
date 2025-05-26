@@ -5,6 +5,7 @@ import pandas as pd
 import pybtex
 from cldfbench import CLDFSpec
 from cldfbench.cldf import CLDFWriter
+from cldfbench.dataset import Dataset as cbDataset
 from loguru import logger as log
 from pycldf import Dataset
 from pycldf.dataset import MD_SUFFIX
@@ -141,7 +142,9 @@ def create_cldf(
     columns = columns or {}
     foreignkeys = foreignkeys or {}
     cldf_tables = cldf_tables or []
-    with CLDFWriter(CLDFSpec(**spec)) as writer:
+    dataset = cbDataset()
+    dataset.metadata = dataset.metadata_cls(**metadata)
+    with CLDFWriter(cldf_spec=CLDFSpec(**spec), dataset=dataset) as writer:
         for component in cldf_tables:
             writer.cldf.add_component(component)
         component_names, component_data, cldf_col_data = load_cldf_data()
@@ -181,6 +184,7 @@ def create_cldf(
             log.error("No sources file(s) specified.")
         writer.cldf.write()
         ds = writer.cldf
+
     if validate:
         ds.validate()
     return ds
