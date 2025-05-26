@@ -67,7 +67,11 @@ def process_native_table(
             )
         else:
             added_cols[col] = {"name": col.capitalize()}
-    writer.cldf.add_component(component_names[table])
+    for existing_table in writer.cldf.tables:
+        if existing_table.url.string.startswith(table):
+            break
+    else:
+        writer.cldf.add_component(component_names[table])
     for col, coldata in added_cols.items():
         log.info(f"Adding unspecified column: {col}")
         writer.cldf.add_columns(component_names[table], coldata)
@@ -173,13 +177,17 @@ def create_cldf(
                 writer.objects[url].append(rec)
 
         if sources:
-            source_path = Path(sources)
-            sources = None
-            if source_path.is_file():
-                sources = pybtex.database.parse_file(source_path)
-                writer.cldf.add_sources(
-                    *[Source.from_entry(k, e) for k, e in sources.entries.items()]
-                )
+            if isinstance(sources, str):
+                source_path = Path(sources)
+                sources = None
+                if source_path.is_file():
+                    sources = pybtex.database.parse_file(source_path)
+                    writer.cldf.add_sources(
+                        *[Source.from_entry(k, e) for k, e in sources.entries.items()]
+                    )
+            elif isinstance(sources, list):
+                writer.cldf.add_sources(*sources)
+
         else:
             log.error("No sources file(s) specified.")
         writer.cldf.write()
