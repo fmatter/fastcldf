@@ -50,8 +50,11 @@ def load_cldf_data():
 
 
 def process_native_table(
-    table, df, component_names, cldf_col_data, writer, user_columns, foreignkeys
+    table, df, component_names, cldf_col_data, writer, user_columns, remove_columns, foreignkeys
 ):
+    for colname, cdata in user_columns.items():
+        if "name" not in cdata:
+            cdata["name"] = colname
     added_cols = {}
     for col in df.columns:
         coldata = find_column_name(col, cldf_col_data[table])
@@ -73,13 +76,17 @@ def process_native_table(
             break
     else:
         writer.cldf.add_component(component_names[table])
+    for col in remove_columns:
+        if col in cldf_col_data[table]:
+            log.info(f"Removing column {col} from {table}")
+            writer.cldf.remove_columns(component_names[table], col)
+        else:
+            log.warning(f"Column {col} not found in {table}, cannot remove it.")
     for col, coldata in added_cols.items():
         log.warning(f"Undefined column {col} in data")
         # log.info(f"Adding unspecified column: {col}")
         # writer.cldf.add_columns(component_names[table], coldata)
     for colname, cdata in user_columns.items():
-        if "name" not in cdata:
-            cdata["name"] = colname
         if colname in cldf_col_data[table]:
             writer.cldf.remove_columns(component_names[table], colname)
         writer.cldf.add_columns(component_names[table], cdata)
@@ -118,6 +125,7 @@ def create_cldf(
     metadata=None,
     columns=None,
     foreignkeys=None,
+    remove_columns=None,
     cldf_tables=None,
     identifier=None,
     validate=True,
@@ -149,6 +157,7 @@ def create_cldf(
         "metadata_fname": "metadata.json",
     }
     columns = columns or {}
+    remove_columns = remove_columns or {}
     foreignkeys = foreignkeys or {}
     cldf_tables = cldf_tables or []
     dataset = cbDataset()
@@ -168,6 +177,7 @@ def create_cldf(
                     writer,
                     user_columns=columns.get(table, {}),
                     foreignkeys=foreignkeys.get(table, {}),
+                    remove_columns=remove_columns.get(table, {}),
                 )
             else:
                 url, df = process_nonnative_table(
