@@ -78,11 +78,13 @@ def process_native_table(
         # log.info(f"Adding unspecified column: {col}")
         # writer.cldf.add_columns(component_names[table], coldata)
     for colname, cdata in user_columns.items():
+        if "name" not in cdata:
+            cdata["name"] = colname
         if colname in cldf_col_data[table]:
             writer.cldf.remove_columns(component_names[table], colname)
         writer.cldf.add_columns(component_names[table], cdata)
-    for colname, ref in foreignkeys.items():
-        writer.cldf.add_foreign_key(component_names[table], colname, ref, "ID")
+    for colname, (ref_table, ref_col) in foreignkeys.items():
+        writer.cldf.add_foreign_key(component_names[table], colname, ref_table, ref_col)
     return component_names[table], df
 
 
