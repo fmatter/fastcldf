@@ -6,12 +6,15 @@ import pybtex
 from cldfbench import CLDFSpec
 from cldfbench.cldf import CLDFWriter
 from cldfbench.dataset import Dataset as cbDataset
+from cldfcatalog import Repository
 from loguru import logger as log
 from pycldf import Dataset
 from pycldf.dataset import MD_SUFFIX
 from pycldf.sources import Source
 from pycldf.util import pkg_path
 from writio import load
+from cldfbench.catalogs import Catalog, Glottolog
+from argparse import Namespace
 
 
 def find_column_name(col, target_cols):
@@ -129,6 +132,8 @@ def create_cldf(
     cldf_tables=None,
     identifier=None,
     validate=True,
+    directory=None,
+    catalogues=None
 ):
     """Creates a CLDF dataset.
 
@@ -159,10 +164,14 @@ def create_cldf(
     columns = columns or {}
     remove_columns = remove_columns or {}
     foreignkeys = foreignkeys or {}
+    catalogues = catalogues or {}
     cldf_tables = cldf_tables or []
+    if not directory:
+        directory = Path(spec.get("dir", "./cldf")).parent
     dataset = cbDataset()
+    dataset.dir = directory
     dataset.metadata = dataset.metadata_cls(**metadata)
-    with CLDFWriter(cldf_spec=CLDFSpec(**spec), dataset=dataset) as writer:
+    with CLDFWriter(cldf_spec=CLDFSpec(**spec), dataset=dataset, args = Namespace(**catalogues)) as writer:
         for component in cldf_tables:
             writer.cldf.add_component(component)
         component_names, component_data, cldf_col_data = load_cldf_data()
