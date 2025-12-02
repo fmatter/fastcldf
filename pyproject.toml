@@ -38,6 +38,7 @@ numpy = "1.26.4"
 loguru = "^0.7.2"
 writio = "^0.1.1"
 pandas = "^2.2.2"
+pybtex = "^0.25.1"
 
 [tool.poetry.group.dev.dependencies]
 keepachangelog = "^1.0.0"

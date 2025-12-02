@@ -18,6 +18,7 @@ from argparse import Namespace
 
 
 def find_column_name(col, target_cols):
+    log.debug(f"Finding column name for: {col}")
     targets = [col, col.capitalize(), col.upper()]
     for data in target_cols.values():
         handle = data.get("propertyUrl", "").split("#")[1]
@@ -102,6 +103,7 @@ def process_nonnative_table(
     table, df, cldf_col_data, writer, user_columns, foreignkeys
 ):
     added_cols = {}
+    log.debug(f"Processing non-native table: {table}:\n{df.head()}")
     for col in df.columns:
         coldata = find_column_name(col, cldf_col_data["general"])
         if coldata:
@@ -210,7 +212,8 @@ def create_cldf(
                         *[Source.from_entry(k, e) for k, e in sources.entries.items()]
                     )
             elif isinstance(sources, list):
-                writer.cldf.add_sources(*sources)
+                for source in sources:
+                    writer.cldf.add_sources(source)
 
         else:
             log.error("No sources file(s) specified.")
